@@ -12,8 +12,7 @@
   segurança, o ideal é usar o Supabase Auth (login de verdade com e-mail/senha).
   Por enquanto, troque a senha abaixo por uma senha forte só sua.
 */
-const ADMIN_SENHA = "barberstudio2026"; // <-- TROQUE ESTA SENHA
-
+const ADMIN_SENHA = "barbershop@22"; // <-- TROQUE ESTA SENHA
 const NOMES_SERVICOS = {
   corte: "Corte Masculino",
   barba: "Barba",
