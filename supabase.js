@@ -20,9 +20,8 @@
   no Supabase, que estão explicadas no README.md.
 */
 
-const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
-const SUPABASE_ANON_KEY = "SUA_ANON_KEY_AQUI";
-
+const SUPABASE_URL = "https://mdnvbxugkntpevotkkyr.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kbnZieHVna250cGV2b3Rra3lyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NTIwMTIsImV4cCI6MjA5OTAyODAxMn0.VTx40ZHW8zBw30bdoPrHrWU-EQ82Z3YPQXkfh5o5hWE";
 // Carrega o cliente Supabase (via CDN, adicionado no HTML)
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
