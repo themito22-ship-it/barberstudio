@@ -172,6 +172,7 @@ async function cancelarAgendamentoPorId(id) {
   }
 
   return { sucesso: true, mensagem: "Agendamento cancelado com sucesso!" };
+}
 
 /**
  * Gera um código único de cancelamento no formato BS-XXXX (letras e números).
