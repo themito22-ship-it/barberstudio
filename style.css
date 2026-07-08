@@ -201,7 +201,7 @@ section { padding: 120px 0; position: relative; }
   background: var(--branco);
   transition: var(--transicao);
 }
-@media (min-width: 860px) { .menu-toggle { display: none; } }
+@media (min-width: 860px) { .menu-toggle { display: none; } } @media (max-width: 859px) { .nav-links { display: none; } }
 
 .mobile-nav {
   position: fixed;
