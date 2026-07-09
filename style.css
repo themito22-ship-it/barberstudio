@@ -1057,3 +1057,127 @@ section { padding: 120px 0; position: relative; }
   .whatsapp-float { right: 20px; bottom: 20px; }
   .chatbot-window { right: 20px; bottom: 168px; }
 }
+
+
+/* ==========================================================================
+   CAMPO DE DATA COM CALENDARIO PERSONALIZADO
+   ========================================================================== */
+
+.date-field-wrap {
+     position: relative;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+}
+.date-field-wrap input {
+     flex: 1;
+     cursor: pointer;
+}
+.btn-calendario {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 34px;
+     height: 34px;
+     color: var(--dourado);
+     border: 1px solid var(--linha);
+     border-radius: 4px;
+     flex-shrink: 0;
+     transition: var(--transicao);
+}
+.btn-calendario:hover {
+     border-color: var(--dourado);
+     background: rgba(201, 162, 75, 0.08);
+}
+
+.calendario-popup {
+     display: none;
+     position: absolute;
+     top: calc(100% + 10px);
+     left: 0;
+     z-index: 50;
+     width: 280px;
+     background: var(--preto-card);
+     border: 1px solid var(--linha);
+     box-shadow: var(--sombra);
+     padding: 16px;
+     border-radius: 4px;
+}
+.calendario-popup.show { display: block; }
+
+.calendario-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     margin-bottom: 12px;
+}
+.calendario-header strong {
+     font-family: var(--fonte-display);
+     color: var(--branco);
+     font-size: 1rem;
+     text-transform: capitalize;
+}
+.calendario-nav {
+     width: 26px;
+     height: 26px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     color: var(--dourado);
+     border: 1px solid var(--linha);
+     border-radius: 4px;
+     font-size: 1rem;
+     transition: var(--transicao);
+}
+.calendario-nav:hover:not(:disabled) {
+     border-color: var(--dourado);
+     background: rgba(201, 162, 75, 0.08);
+}
+.calendario-nav:disabled {
+     opacity: 0.25;
+     cursor: not-allowed;
+}
+
+.calendario-semana {
+     display: grid;
+     grid-template-columns: repeat(7, 1fr);
+     gap: 4px;
+     margin-bottom: 6px;
+}
+.calendario-semana span {
+     text-align: center;
+     font-size: 0.68rem;
+     color: var(--cinza);
+     text-transform: uppercase;
+}
+
+.calendario-grid {
+     display: grid;
+     grid-template-columns: repeat(7, 1fr);
+     gap: 4px;
+}
+.calendario-dia {
+     aspect-ratio: 1 / 1;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 0.82rem;
+     color: var(--branco);
+     border-radius: 4px;
+     transition: var(--transicao);
+}
+.calendario-dia.vazio { cursor: default; }
+.calendario-dia:not(.desabilitado):not(.vazio):hover {
+     background: rgba(201, 162, 75, 0.14);
+     color: var(--dourado);
+}
+.calendario-dia.selecionado {
+     background: var(--dourado);
+     color: var(--preto);
+     font-weight: 700;
+}
+.calendario-dia.desabilitado {
+     color: var(--cinza);
+     opacity: 0.3;
+     cursor: not-allowed;
+}
