@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initRouter();
   initRevealAnimations();
   initBookingForm();
+  initCalendarioPersonalizado();
   initCancelForm();
   preencherAnoFooter();
 });
@@ -495,5 +496,122 @@ function initModalCancelamento() {
       btnConfirmar.disabled = false;
       btnConfirmar.innerHTML = textoOriginal;
     }
+  });
+}
+
+
+/* ==========================================================================
+   CALENDARIO PERSONALIZADO (campo Data)
+========================================================================== */
+
+const NOMES_MES = [
+  "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+const NOMES_DIA_SEMANA = ["D", "S", "T", "Q", "Q", "S", "S"];
+
+let calendarioMesExibido = null;
+
+function initCalendarioPersonalizado() {
+  const dataInput = document.getElementById("agendamento-data");
+  const btnAbrir = document.getElementById("btn-abrir-calendario");
+  const popup = document.getElementById("calendario-popup");
+  if (!dataInput || !btnAbrir || !popup) return;
+
+  const hoje = new Date();
+  calendarioMesExibido = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+
+  function abrirPopup() {
+    renderCalendario(dataInput, popup);
+    popup.classList.add("show");
+  }
+
+  function fecharPopup() {
+    popup.classList.remove("show");
+  }
+
+  btnAbrir.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (popup.classList.contains("show")) {
+      fecharPopup();
+    } else {
+      abrirPopup();
+    }
+  });
+
+  dataInput.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!popup.classList.contains("show")) abrirPopup();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!popup.contains(e.target) && e.target !== btnAbrir && !btnAbrir.contains(e.target)) {
+      fecharPopup();
+    }
+  });
+
+  popup.addEventListener("click", (e) => e.stopPropagation());
+}
+
+function renderCalendario(dataInput, popup) {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  const ano = calendarioMesExibido.getFullYear();
+  const mes = calendarioMesExibido.getMonth();
+
+  const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+  const totalDias = new Date(ano, mes + 1, 0).getDate();
+
+  const mesAnteriorAoAtual =
+    ano < hoje.getFullYear() || (ano === hoje.getFullYear() && mes < hoje.getMonth());
+
+  let diasHtml = "";
+  for (let i = 0; i < primeiroDiaSemana; i++) {
+    diasHtml += `<span class="calendario-dia vazio"></span>`;
+  }
+
+  for (let dia = 1; dia <= totalDias; dia++) {
+    const dataDia = new Date(ano, mes, dia);
+    const dataDiaISO = formatarDataISO(dataDia);
+    const desabilitado = dataDia < hoje;
+    const selecionado = dataInput.value === dataDiaISO;
+
+    diasHtml += `<button type="button" class="calendario-dia${desabilitado ? " desabilitado" : ""}${selecionado ? " selecionado" : ""}" data-data="${dataDiaISO}" ${desabilitado ? "disabled" : ""}>${dia}</button>`;
+  }
+
+  popup.innerHTML = `
+    <div class="calendario-header">
+      <button type="button" class="calendario-nav" id="calendario-mes-anterior" ${mesAnteriorAoAtual ? "disabled" : ""} aria-label="Mes anterior">&lsaquo;</button>
+      <strong>${NOMES_MES[mes]} ${ano}</strong>
+      <button type="button" class="calendario-nav" id="calendario-mes-seguinte" aria-label="Proximo mes">&rsaquo;</button>
+    </div>
+    <div class="calendario-semana">
+      ${NOMES_DIA_SEMANA.map((d) => `<span>${d}</span>`).join("")}
+    </div>
+    <div class="calendario-grid">${diasHtml}</div>
+  `;
+
+  const btnAnterior = popup.querySelector("#calendario-mes-anterior");
+  const btnSeguinte = popup.querySelector("#calendario-mes-seguinte");
+
+  btnAnterior?.addEventListener("click", () => {
+    calendarioMesExibido = new Date(ano, mes - 1, 1);
+    renderCalendario(dataInput, popup);
+  });
+
+  btnSeguinte?.addEventListener("click", () => {
+    calendarioMesExibido = new Date(ano, mes + 1, 1);
+    renderCalendario(dataInput, popup);
+  });
+
+  popup.querySelectorAll(".calendario-dia:not(.vazio):not(.desabilitado)").forEach((el) => {
+    el.addEventListener("click", () => {
+      const dataEscolhida = el.getAttribute("data-data");
+      dataInput.value = dataEscolhida;
+      dataInput.closest(".field")?.classList.remove("invalid");
+      popup.classList.remove("show");
+      dataInput.dispatchEvent(new Event("change"));
+    });
   });
 }
